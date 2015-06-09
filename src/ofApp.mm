@@ -14,14 +14,14 @@ void ofApp::setup(){
     soundPoints->push_back(music);
     selectedPoint = NULL;
     
-    bool loaded = cracklingFire->setup("sounds/Fire.mp3", ofVec2f(0, 0), 4, 0.0, 1.0, false);
+    bool loaded = cracklingFire->setup("sounds/Fire.mp3", ofVec2f(0, 0), 2, 0.0, 1.0, false);
     
     if(loaded) {
         cracklingFire->setLoop(true);
         cracklingFire->play();
     }
     
-    loaded = music->setup("sounds/music.mp3", ofVec2f(0, 0), 8, 0.0, 1.0, false);
+    loaded = music->setup("sounds/music.mp3", ofVec2f(0, 0), 3, 0.0, 1.0, false);
     
     if(loaded) {
         music->setLoop(true);
@@ -32,11 +32,25 @@ void ofApp::setup(){
     
     [newView setup];
     
-    ofSoundStreamSetup(2, 0);
+    ofSoundStreamSetup(2, 1);
+    
+    soundBuffer.resize(N, 0.0);
+    setupFinished = true;
     
     x = 0;
     y = 0;
 }
+//--------------------------------------------------------------
+void ofApp::audioIn(float * input, int bufferSize, int nChannels) {
+    if (setupFinished) {
+        for(int i = 0; i < bufferSize; i++) {
+            soundBuffer[recPos] = input[i];
+            recPos++;
+            recPos %= N;
+        }
+    }
+}
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -50,11 +64,6 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofSetColor(0);
-    //ofDrawBitmapString("x: " + ofToString([newView position].x), 10, 10);
-    //ofDrawBitmapString("y: " + ofToString([newView position].y), 10, 20);
-    //ofDrawBitmapString("or: " + ofToString([newView orientation]), 10, 30);
-    //ofDrawBitmapString("acc: " + ofToString([newView accuracy]), 10, 40);
-    
     [newView draw];
     
     for(auto point : *soundPoints) {
@@ -72,7 +81,11 @@ void ofApp::draw(){
 }
 
 void ofApp::audioOut( float * output, int bufferSize, int nChannels ) {
-    
+    for(int i=0; i < bufferSize; i++) {
+        output[2*i] = output[2*i+1] = soundBuffer[playPos];
+        playPos++;
+        playPos %= N;
+    }
 }
 
 

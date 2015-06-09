@@ -7,16 +7,6 @@
 #include "SoundPoint.h"
 #include "ofxTween.h"
 
-class ofApp;
-
-//@interface estimoteDelegate : NSObject<ESTIndoorLocationManagerDelegate> {
-//    ofApp* appCpp;
-//}
-//
-//- (id) init:(ofApp *)estCpp;
-//
-//@end
-
 class ofApp : public ofxiOSApp{
 	
     public:
@@ -25,10 +15,9 @@ class ofApp : public ofxiOSApp{
         void draw();
         void exit();
     
+        void audioIn(float * input, int bufferSize, int nChannels);
         void audioOut( float * output, int bufferSize, int nChannels );
     
-       // void audioRequested(float * output, int bufferSize, int nChannels);
-	
         void touchDown(ofTouchEventArgs & touch);
         void touchMoved(ofTouchEventArgs & touch);
         void touchUp(ofTouchEventArgs & touch);
@@ -42,20 +31,22 @@ class ofApp : public ofxiOSApp{
     
     ESTLocation *location;
     ESTIndoorLocationManager *manager;
-    //ESTIndoorLocationView *view;
+    vector<float> soundBuffer;
     view *newView;
     float x, y;
     
-    //estimoteDelegate *delegate;
+    const int sampleRate = 44100;
+    const float duration = 2.0;
+    const int N = duration * sampleRate;
+    int recPos = 0;
+    int playPos = 100;
+    bool setupFinished = false;
     
-    //ofSoundStream stream;
     vector<SoundPoint*>* soundPoints;
     SoundPoint* selectedPoint;
     SoundPoint* cracklingFire;
     SoundPoint* music;
     SoundPoint* scary;
-    //ofSoundPlayer player;
-    //ofSoundPlayer player2;
     
     float sonicBuffer[];
 };
