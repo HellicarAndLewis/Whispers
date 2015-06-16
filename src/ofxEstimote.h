@@ -28,6 +28,8 @@ class estimoteLocation;
 @property (assign) float orientation;
 @property (assign) ofVec2f origin;
 @property (assign) vector<ofVec2f> corners;
+@property (assign) vector<ofVec2f> beacons;
+@property (assign) ofRectangle boundingBox;
 - (void) setup;
 - (void) draw;
 
@@ -38,7 +40,6 @@ class estimoteLocation {
     ofVec2f pos;
     float orient;
     int accuracy;
-    //void update();
 };
 
 #endif /* defined(__estimoteTest__ofxEstimote__) */

@@ -28,7 +28,7 @@ void SoundPoint::setLoop(bool _loop) {
 
 void SoundPoint::play() {
     if(player->isLoaded() && !player->getIsPlaying()) player->play();
-    else cout << "SoundPoint::play(): Error sound is not loaded" << endl;
+    //else cout << "SoundPoint::play(): Error sound is not loaded" << endl;
 }
 
 void SoundPoint::setPaused(bool _paused) {
@@ -40,7 +40,7 @@ void SoundPoint::stop() {
         player->stop();
         player->setPosition(0.0);
     }
-    else cout << "SoundPoint::stop(): Error Sound is not playing" << endl;
+    //else cout << "SoundPoint::stop(): Error Sound is not playing" << endl;
 }
 
 bool SoundPoint::loadSound(string soundLoc) {
@@ -95,10 +95,10 @@ void SoundPoint::setLoc(ofVec2f _loc) {
     loc = _loc;
 }
 
-void SoundPoint::draw() {
+void SoundPoint::draw(ofRectangle rect) {
     ofPushStyle();
     ofPushMatrix();
-    ofTranslate(ofMap(loc.x, -4, 4, 0, ofGetWidth()), ofMap(loc.y, -4, 4, 0, ofGetHeight()));
+    ofTranslate(ofMap(loc.x, rect.x, rect.x + rect.width, 0, ofGetWidth()), ofMap(loc.y, rect.y, rect.y + rect.height, 0, ofGetHeight()));
     ofFill();
     ofSetColor(0);
     ofCircle(0, 0, 10, 10);

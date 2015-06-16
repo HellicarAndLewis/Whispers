@@ -27,7 +27,7 @@ public:
     void play();
     void setPaused(bool _paused);
     void stop();
-    void draw();
+    void draw(ofRectangle rect);
 private:
     ofSoundPlayer* player;
     ofVec2f loc;
